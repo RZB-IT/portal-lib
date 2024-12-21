@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "RZB portal lib"
+name = "rzbportal"
 version = "1.0.0"
 description = "Library of various functions across rzb projects"
 authors = ["Jan Smrz <jan-smrz@jan-smrz.cz>"]
@@ -23,7 +23,7 @@ pytest-asyncio = "^0.25.0"
 
 [build-system]
 requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+build-backend = "poetry.core.masonry.api"
 
 
 [tool.pytest.ini_options]

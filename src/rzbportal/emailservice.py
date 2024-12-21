@@ -1,10 +1,11 @@
 import logging
-import httpx
-import httpcore
+from dataclasses import dataclass
 from typing import List
-from dataclasses import dataclass, Field
 
-logger = logging.getLogger("utils.emailservice")
+import httpcore
+import httpx
+
+logger = logging.getLogger("rzbportal.emailservice")
 
 
 @dataclass(frozen=True)
@@ -18,16 +19,17 @@ class DefaultTemplateParams:
 
 
 class EmailService():
-    """EmailService class provides methods to interact with an email service.
-    Methods:
-        __init__(base_url: str):
-            Initializes the EmailService with the base URL of the email service.
-        async check_status() -> bool:
-        async send_template_email(subject: str, template_id: str, recipients: List[str], template_params: dict | None = None, recipients_overrides: dict | None = None) -> bool:
-        _create_body_dict(subject: str, recipients: List[str], template_params: dict | None = None, recipients_overrides: dict | None = None, template_id: str | None = None) -> dict:
+    """
+    EmailService class provides methods to interact with an email service.
     """
     
     def __init__(self, base_url: str, default_template_params: DefaultTemplateParams):
+        """
+        Initializes the EmailService with the given base URL and default template parameters.
+        Args:
+            base_url (str): The base URL for the email service.
+            default_template_params (DefaultTemplateParams): The default parameters for email templates.
+        """
         self._base_url = base_url
         self._default_template_params = default_template_params
 

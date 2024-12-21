@@ -8,10 +8,17 @@ from starlette.requests import Request
 
 from .entity import UserData
 
-logger = logging.getLogger("rzbutils.security")
+logger = logging.getLogger("rzbportal.security")
 
 
 class Security:
+    """Security class for handling user authentication and authorization.
+    Attributes:
+        raw_jwt (str): The raw JSON Web Token (JWT) for the user.
+        user_data (UserData): The user data object containing user information and ACLs.
+        id_token (str): The user ID token.
+    """
+
     def __init__(
         self,
         raw_jwt: str,
@@ -24,6 +31,12 @@ class Security:
 
     @property
     def raw_jwt(self) -> str:
+        """
+        Returns the raw JSON Web Token (JWT) as a string.
+        Returns:
+            str: The raw JWT.
+        """
+
         return self._raw_jwt
     
     def can(self, acl: str) -> bool:
@@ -107,6 +120,16 @@ class SecurityProvider(HTTPBearer):
             Security: An instance of the Security class containing the raw JWT and user data.
         Raises:
             HTTPException: If no credentials are provided, if the JWT data is invalid, or if user info is not found.
+
+        # Example usage of SecurityProvider in a FastAPI route
+        app = FastAPI()
+        security_provider = SecurityProvider(jwt_sercret_key="your_jwt_secret_key")
+
+        @app.get("/protected-route")
+        async def protected_route(security: Security = Depends(security_provider)):
+            if not security.can("required_acl"):
+            raise HTTPException(status_code=403, detail="Access forbidden")
+            return {"message": "You have access to this route"}
         """
 
         credentials: HTTPAuthorizationCredentials | None = await super(SecurityProvider, self).__call__(request)
