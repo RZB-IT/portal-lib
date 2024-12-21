@@ -1,0 +1,87 @@
+[tool.poetry]
+name = "RZB portal lib"
+version = "1.0.0"
+description = "Library of various functions across rzb projects"
+authors = ["Jan Smrz <jan-smrz@jan-smrz.cz>"]
+readme = "README.md"
+package-mode = true
+
+
+[tool.poetry.dependencies]
+python = "^3.12"
+redis-om = "^0.3.3"
+httpx = "^0.28.1"
+fastapi = "^0.115.6"
+pyjwt = "^2.10.1"
+build = "^1.2.2.post1"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+pytest-asyncio = "^0.25.0"
+
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+
+[tool.pytest.ini_options]
+minversion = "8.3"
+addopts = "-v --no-header --capture=sys -p no:warnings"
+testpaths = [
+  "tests/"
+]
+pythonpath = [
+  "src/"
+]
+env = [
+]
+markers = [
+  "unit",
+  "asyncio"
+]
+asyncio_default_fixture_loop_scope = "session"
+
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+
+
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "def __repr__",
+  "def __str__",
+  "raise AssertionError",
+  "raise NotImplementedError",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+  "if typing.TYPE_CHECKING:"
+]
+
+[[tool.mypy.overrides]]
+module = "sqlalchemy.*"
+ignore_missing_imports = true
+
+[tool.ruff]
+src = ["src", "tests"]
+target-version = "py311"
+line-length = 160
+select = [
+  "A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ARG", "BLE",
+  "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "INP", "ISC", "NPY", "PD", "PGH",
+  "PIE", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TID",
+  "TRY", "UP", "YTT"
+]
+ignore = ["E501", "S101", "D1", "B007", "B904", "ERA001", "G004"]
+
+[tool.ruff.isort]
+order-by-type = false
+
+[tool.ruff.per-file-ignores]
+"tests/**/*.py" = ["D", "S", "N801", "N802", "N806", "T201", "E501"]
+
+[tool.ruff.pydocstyle]
+convention = "google"
